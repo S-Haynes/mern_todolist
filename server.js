@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 const app = express();
+const itemRoutes = require("./routes/items");
 
 // Body-parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,8 +22,10 @@ mongoose
     console.log(err);
   });
 
-// serve port
+// use routes
+app.use("/api/items", itemRoutes);
 
+// serve port
 const port = process.env.PORT || 5000;
 
 app.listen(port, (req, res) => {
