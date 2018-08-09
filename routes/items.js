@@ -22,4 +22,26 @@ router.post("/", (req, res) => {
     .catch(err => console.log(err));
 });
 
+// delete item route
+router.delete("/:id", (req, res) => {
+  Item.findByIdAndRemove(req.params.id)
+    .then(item => {
+      res.json({ success: true });
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+// item show route
+router.get("/", (req, res) => {
+  Item.find({})
+    .then(items => {
+      res.json(items);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
