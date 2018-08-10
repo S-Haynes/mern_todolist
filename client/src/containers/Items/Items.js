@@ -1,52 +1,36 @@
 import React, { Component } from "react";
 import Item from "../../components/Item/Item";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/item";
 
 class Items extends Component {
-  state = {
-    items: [
-      { name: "Milk", id: 312312 },
-      { name: "Eggs", id: 31234412 },
-      { name: "Syrup", id: 312356712 },
-      { name: "Pancakes", id: 3123812 }
-    ],
-    newItem: ""
-  };
+  componentDidMount() {
+    this.props.getItems();
+  }
 
   itemDeleteHandler = id => {
-    const items = [...this.state.items];
-
-    const updatedItems = items.filter(item => {
-      return item.id !== id;
-    });
-
-    this.setState({ items: updatedItems });
+    this.props.deleteItem(id);
   };
 
   onChangeHandler = e => {
-    let newItem = [...this.state.newItem];
-    newItem = e.target.value;
-
-    this.setState({ newItem: newItem });
+    this.props.createItem(e);
   };
 
   addItemHandler = e => {
     e.preventDefault();
-    let newItem = {
-      name: this.state.newItem,
-      id: this.state.newItem + Math.random() * 1000000
+    const newItem = {
+      name: this.props.newItem
     };
 
-    let items = [newItem, ...this.state.items];
-
-    this.setState({ items: items, newItem: "" });
+    this.props.addItem(newItem);
   };
 
   render() {
-    const items = this.state.items.map(item => {
+    const items = this.props.items.map(item => {
       return (
         <Item
-          delete={this.itemDeleteHandler.bind(this, item.id)}
-          key={item.id}
+          delete={this.itemDeleteHandler.bind(this, item._id)}
+          key={item._id}
           name={item.name}
         />
       );
@@ -66,7 +50,7 @@ class Items extends Component {
             type="text"
             onChange={e => this.onChangeHandler(e)}
             placeholder="Add An Item"
-            value={this.state.newItem}
+            value={this.props.newItem}
           />
         </form>
       </div>
@@ -74,4 +58,23 @@ class Items extends Component {
   }
 }
 
-export default Items;
+const mapStateToProps = state => {
+  return {
+    items: state.items,
+    newItem: state.newItem
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getItems: () => dispatch(actions.getItems()),
+    addItem: newItem => dispatch(actions.addItem(newItem)),
+    createItem: e => dispatch(actions.createItem(e)),
+    deleteItem: id => dispatch(actions.deleteItem(id))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Items);
