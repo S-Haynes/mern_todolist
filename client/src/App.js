@@ -1,12 +1,14 @@
 import React, { Component } from "react";
+import Layout from "./components/Layout/Layout";
+import Items from "./containers/Items/Items";
 import "./App.css";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>Hello</h1>
-      </div>
+      <Layout>
+        <Items />
+      </Layout>
     );
   }
 }

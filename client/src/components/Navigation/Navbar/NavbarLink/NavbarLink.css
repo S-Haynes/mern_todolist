@@ -1,0 +1,12 @@
+.NavbarLink {
+  color: white;
+  margin-right: 20%;
+}
+
+.NavbarLink a {
+  list-style: none;
+  text-decoration: none;
+  cursor: pointer;
+  color: white;
+  font-size: 24px;
+}
